@@ -55,6 +55,9 @@ dmypy.json
 .env
 .env.local
 
+# Pararam cookies
+.pararam_cookies.json*
+
 # Build artifacts
 *.pyc
 __pycache__/

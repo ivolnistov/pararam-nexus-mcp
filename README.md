@@ -16,11 +16,72 @@ This MCP server uses the `pararamio-aio` library to provide asynchronous access 
 ## Features
 
 - Asynchronous API client for pararam.io
-- Two-factor authentication support
-- User search capabilities
-- Chat message management
-- User profile management
-- Group interactions
+- Two-factor authentication support (TOTP)
+- Session persistence with cookie storage
+- Comprehensive chat and message management
+- File attachment handling (upload and download)
+- URL-based message retrieval
+- Conversation thread building
+
+## Available Tools
+
+### Message Operations
+- **search_messages**: Search for messages across all chats with advanced search syntax (Boolean operators, wildcards, filters)
+- **get_chat_messages**: Get recent messages from a specific chat
+- **send_message**: Send a message to a chat with optional reply and quote text
+- **get_message_from_url**: Extract and retrieve a message from pararam.io URL
+
+### Chat Operations
+- **search_chats**: Search for chats by name or description
+- **build_conversation_thread**: Build a conversation tree from a root message
+
+### File Operations
+- **upload_file_to_chat**: Upload files to a chat (from path or base64 content)
+- **get_post_attachments**: List all attachments in a post
+- **download_post_attachment**: Download attachments (to disk or as ImageContent)
+  - 1MB size limit for downloads
+  - Supported formats for direct display: images (JPEG, PNG, GIF, WEBP), documents (PDF, DOCX, DOC, TXT, RTF, ODT, HTML, EPUB), spreadsheets (XLSX, XLS, CSV), data (JSON, XML)
+  - Returns ImageContent for supported types (displays natively in Claude Desktop/Code)
+  - For unsupported types, requires output_path to save to disk
+  - Saves to disk when output path is provided
+
+### User Operations
+- **search_users**: Search for users by name or unique name
+- **get_user_info**: Get detailed information about a specific user
+- **get_user_team_status**: Get user's status in teams (member, admin, guest)
+
+## Tool Details
+
+### send_message
+
+Send a message to a chat with optional reply and quote functionality.
+
+**Parameters:**
+- `chat_id` (required): ID of the chat to send message to
+- `text` (required): Message text to send
+- `reply_to_message_id` (optional): Post number to reply to
+- `quote_text` (optional): Text to quote from the replied message (only used with `reply_to_message_id`)
+
+**Examples:**
+```python
+# Simple message
+send_message(chat_id="123", text="Hello!")
+
+# Reply to a message
+send_message(
+    chat_id="123",
+    text="I agree!",
+    reply_to_message_id="456"
+)
+
+# Reply with quoted text
+send_message(
+    chat_id="123",
+    text="That's a great idea!",
+    reply_to_message_id="456",
+    quote_text="We should implement this feature next week"
+)
+```
 
 ## Installation
 
