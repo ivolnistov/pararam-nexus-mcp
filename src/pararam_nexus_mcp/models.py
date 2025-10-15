@@ -47,8 +47,6 @@ class PostInfo(BaseModel):
     )
 
 
-
-
 class ChatMessageInfo(BaseModel):
     """Message with chat information."""
 
