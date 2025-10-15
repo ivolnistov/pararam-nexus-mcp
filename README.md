@@ -87,7 +87,13 @@ send_message(
 
 ### Quick Install with uvx (Recommended)
 
-Install directly from GitHub:
+Install directly from PyPI:
+
+```bash
+uvx pararam-nexus-mcp
+```
+
+Or install from GitHub:
 
 ```bash
 uvx --from git+https://github.com/ivolnistov/pararam-nexus-mcp pararam-nexus-mcp
@@ -99,6 +105,20 @@ Or clone to a specific directory (e.g., `~/.mcp/`):
 git clone https://github.com/ivolnistov/pararam-nexus-mcp.git ~/.mcp/pararam-nexus-mcp
 cd ~/.mcp/pararam-nexus-mcp
 uv sync
+```
+
+### Docker Installation
+
+Pull from [Docker Hub](https://hub.docker.com/r/ivolnistov/pararam-nexus-mcp):
+
+```bash
+docker pull ivolnistov/pararam-nexus-mcp:latest
+```
+
+Or from GitHub Container Registry:
+
+```bash
+docker pull ghcr.io/ivolnistov/pararam-nexus-mcp:latest
 ```
 
 ### Development Installation
@@ -120,6 +140,165 @@ PARARAM_LOGIN=your_login
 PARARAM_PASSWORD=your_password
 PARARAM_2FA_KEY=your_2fa_key  # Optional
 ```
+
+## MCP Client Configuration
+
+### Claude Code (CLI)
+
+Add the server using the Claude Code CLI:
+
+```bash
+# Using uvx (recommended)
+claude mcp add pararam-nexus \
+  --env PARARAM_LOGIN=myuser@example.com \
+  --env PARARAM_PASSWORD=mySecurePassword123 \
+  --env PARARAM_2FA_KEY=JBSWY3DPEHPK3PXP \
+  -- uvx pararam-nexus-mcp
+
+# Using Docker
+claude mcp add pararam-nexus \
+  --env PARARAM_LOGIN=myuser@example.com \
+  --env PARARAM_PASSWORD=mySecurePassword123 \
+  --env PARARAM_2FA_KEY=JBSWY3DPEHPK3PXP \
+  -- docker run -i --rm ivolnistov/pararam-nexus-mcp:latest
+```
+
+### Claude Desktop
+
+#### Option 1: Using uvx (Recommended)
+
+1. Open Claude Desktop preferences
+2. Navigate to the MCP section
+3. Click Edit to open `claude_desktop_config.json`
+4. Add the server configuration:
+
+```json
+{
+  "mcpServers": {
+    "pararam-nexus": {
+      "command": "uvx",
+      "args": ["pararam-nexus-mcp"],
+      "env": {
+        "PARARAM_LOGIN": "myuser@example.com",
+        "PARARAM_PASSWORD": "mySecurePassword123",
+        "PARARAM_2FA_KEY": "JBSWY3DPEHPK3PXP"
+      }
+    }
+  }
+}
+```
+
+#### Option 2: Using Docker
+
+First, create a volume for session persistence:
+```bash
+docker volume create pararam-mcp-data
+```
+
+Then add to `claude_desktop_config.json`:
+```json
+{
+  "mcpServers": {
+    "pararam-nexus": {
+      "command": "docker",
+      "args": [
+        "run",
+        "-i",
+        "--rm",
+        "-v",
+        "pararam-mcp-data:/app/.cookies",
+        "-e",
+        "PARARAM_LOGIN=myuser@example.com",
+        "-e",
+        "PARARAM_PASSWORD=mySecurePassword123",
+        "-e",
+        "PARARAM_2FA_KEY=JBSWY3DPEHPK3PXP",
+        "ivolnistov/pararam-nexus-mcp:latest"
+      ]
+    }
+  }
+}
+```
+
+### Cursor IDE
+
+Add to `.cursor/mcp.json`:
+
+```json
+{
+  "mcpServers": {
+    "pararam-nexus": {
+      "command": "uvx",
+      "args": ["pararam-nexus-mcp"],
+      "env": {
+        "PARARAM_LOGIN": "myuser@example.com",
+        "PARARAM_PASSWORD": "mySecurePassword123",
+        "PARARAM_2FA_KEY": "JBSWY3DPEHPK3PXP"
+      }
+    }
+  }
+}
+```
+
+Or using Docker (with session persistence):
+
+First, create a volume:
+```bash
+docker volume create pararam-mcp-data
+```
+
+Then add to `.cursor/mcp.json`:
+```json
+{
+  "mcpServers": {
+    "pararam-nexus": {
+      "command": "docker",
+      "args": [
+        "run",
+        "-i",
+        "--rm",
+        "-v",
+        "pararam-mcp-data:/app/.cookies",
+        "-e",
+        "PARARAM_LOGIN=myuser@example.com",
+        "-e",
+        "PARARAM_PASSWORD=mySecurePassword123",
+        "-e",
+        "PARARAM_2FA_KEY=JBSWY3DPEHPK3PXP",
+        "ivolnistov/pararam-nexus-mcp:latest"
+      ]
+    }
+  }
+}
+```
+
+### Other MCP-Compatible Clients
+
+For any MCP-compatible client that supports stdio transport:
+
+**Using uvx:**
+```bash
+uvx pararam-nexus-mcp
+```
+
+**Using Docker (with session persistence):**
+```bash
+# Create volume for cookies
+docker volume create pararam-mcp-data
+
+# Run with volume mounted
+docker run -i --rm \
+  -v pararam-mcp-data:/app/.cookies \
+  -e PARARAM_LOGIN=myuser@example.com \
+  -e PARARAM_PASSWORD=mySecurePassword123 \
+  -e PARARAM_2FA_KEY=JBSWY3DPEHPK3PXP \
+  ivolnistov/pararam-nexus-mcp:latest
+```
+
+**Environment variables:**
+- `PARARAM_LOGIN` (required): Your pararam.io login
+- `PARARAM_PASSWORD` (required): Your pararam.io password
+- `PARARAM_2FA_KEY` (optional): Your 2FA secret key for TOTP authentication
 
 ## Usage
 
