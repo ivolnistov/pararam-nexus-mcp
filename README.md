@@ -85,7 +85,29 @@ send_message(
 
 ## Installation
 
+### Quick Install with uvx (Recommended)
+
+Install directly from GitHub:
+
 ```bash
+uvx --from git+https://github.com/ivolnistov/pararam-nexus-mcp pararam-nexus-mcp
+```
+
+Or clone to a specific directory (e.g., `~/.mcp/`):
+
+```bash
+git clone https://github.com/ivolnistov/pararam-nexus-mcp.git ~/.mcp/pararam-nexus-mcp
+cd ~/.mcp/pararam-nexus-mcp
+uv sync
+```
+
+### Development Installation
+
+For local development:
+
+```bash
+git clone https://github.com/ivolnistov/pararam-nexus-mcp.git
+cd pararam-nexus-mcp
 uv sync --dev
 ```
 
@@ -101,7 +123,20 @@ PARARAM_2FA_KEY=your_2fa_key  # Optional
 
 ## Usage
 
-Run the server:
+### If installed with uvx:
+
+```bash
+uvx --from git+https://github.com/ivolnistov/pararam-nexus-mcp pararam-nexus-mcp
+```
+
+### If cloned locally:
+
+```bash
+cd ~/.mcp/pararam-nexus-mcp
+uv run pararam-nexus-mcp
+```
+
+### For development:
 
 ```bash
 uv run pararam-nexus-mcp

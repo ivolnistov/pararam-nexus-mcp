@@ -19,13 +19,17 @@ classifiers = [
     "Topic :: Software Development :: Libraries",
     "Framework :: AsyncIO",
 ]
-
 dependencies = [
     "httpx>=0.24.0",
     "pydantic>=2.0.0",
     "fastmcp>=0.1.0",
     "pararamio-aio==3.0.6",
 ]
+
+[project.urls]
+Homepage = "https://github.com/ivolnistov/pararam-nexus-mcp"
+Repository = "https://github.com/ivolnistov/pararam-nexus-mcp"
+Issues = "https://github.com/ivolnistov/pararam-nexus-mcp/issues"
 
 [project.scripts]
 pararam-nexus-mcp = "pararam_nexus_mcp.server:main"
